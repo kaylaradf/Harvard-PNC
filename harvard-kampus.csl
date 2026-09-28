@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never" default-locale="en-GB">
+  <info>
+    <title>Harvard Kampus (adaptasi Cite Them Right)</title>
+    <title-short>Harvard Kampus</title-short>
+    <id>http://www.zotero.org/styles/harvard-kampus</id>
+    <link href="http://www.zotero.org/styles/harvard-kampus" rel="self"/>
+    <category citation-format="author-date"/>
+    <category field="generic-base"/>
+    <summary>Adaptasi Harvard Cite Them Right: penulis dengan "&amp;", judul jurnal/buku tanpa cetak miring, tanpa DOI, urut abjad.</summary>
+    <updated>2026-09-28T00:00:00+00:00</updated>
+  </info>
+
+  <!-- ===================== MACROS ===================== -->
+
+  <!-- Penulis untuk daftar pustaka: Hidayat, N., Widyaningrum, N. & Sarjito, A. -->
+  <macro name="author">
+    <names variable="author">
+      <name name-as-sort-order="all" sort-separator=", " initialize-with="." delimiter=", " delimiter-precedes-last="never" and="symbol"/>
+      <substitute>
+        <names variable="editor">
+          <name name-as-sort-order="all" sort-separator=", " initialize-with="." delimiter=", " delimiter-precedes-last="never" and="symbol"/>
+          <label form="short" prefix=" (" suffix=")"/>
+        </names>
+        <text variable="title"/>
+      </substitute>
+    </names>
+  </macro>
+
+  <!-- Penulis untuk kutipan dalam teks: (Hidayat, Widyaningrum & Sarjito, 2021) -->
+  <macro name="author-short">
+    <names variable="author">
+      <name form="short" and="symbol" delimiter=", " delimiter-precedes-last="never"/>
+      <substitute>
+        <names variable="editor">
+          <name form="short" and="symbol" delimiter=", " delimiter-precedes-last="never"/>
+        </names>
+        <text variable="title" form="short"/>
+      </substitute>
+    </names>
+  </macro>
+
+  <macro name="editor">
+    <names variable="editor">
+      <name name-as-sort-order="all" sort-separator=", " initialize-with="." delimiter=", " delimiter-precedes-last="never" and="symbol"/>
+      <label form="short" prefix=" (" suffix=")"/>
+    </names>
+  </macro>
+
+  <!-- Tahun (+ a/b/c bila ada tahun ganda) -->
+  <macro name="year">
+    <group>
+      <choose>
+        <if variable="issued">
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </if>
+        <else>
+          <text term="no date" form="short"/>
+        </else>
+      </choose>
+      <text variable="year-suffix"/>
+    </group>
+  </macro>
+
+  <macro name="year-paren">
+    <group prefix="(" suffix=")">
+      <text macro="year"/>
+    </group>
+  </macro>
+
+  <!-- pp. 32-41 / p. 5 -->
+  <macro name="pages">
+    <group delimiter=" ">
+      <label variable="page" form="short"/>
+      <text variable="page"/>
+    </group>
+  </macro>
+
+  <macro name="edition">
+    <choose>
+      <if is-numeric="edition">
+        <group delimiter=" ">
+          <number variable="edition" form="ordinal"/>
+          <text term="edition" form="short"/>
+        </group>
+      </if>
+      <else>
+        <text variable="edition"/>
+      </else>
+    </choose>
+  </macro>
+
+  <macro name="access">
+    <choose>
+      <if variable="URL">
+        <group delimiter=" ">
+          <text term="available at" text-case="capitalize-first" suffix=":"/>
+          <text variable="URL"/>
+          <group prefix="(" suffix=")" delimiter=": ">
+            <text term="accessed" text-case="capitalize-first"/>
+            <date variable="accessed" form="text"/>
+          </group>
+        </group>
+      </if>
+    </choose>
+  </macro>
+
+  <!-- ===== Isi tiap jenis sumber ===== -->
+
+  <!-- Artikel jurnal: 'Judul', Nama Jurnal, 8(1), pp. 32-41 -->
+  <macro name="body-journal">
+    <group delimiter=", ">
+      <text variable="title" prefix="'" suffix="'"/>
+      <text variable="container-title"/>
+      <group>
+        <text variable="volume"/>
+        <text variable="issue" prefix="(" suffix=")"/>
+      </group>
+      <text macro="pages"/>
+    </group>
+  </macro>
+
+  <!-- Koran / majalah -->
+  <macro name="body-news">
+    <group delimiter=", ">
+      <text variable="title" prefix="'" suffix="'"/>
+      <text variable="container-title"/>
+      <date variable="issued" form="text" date-parts="day-month"/>
+      <text macro="pages"/>
+    </group>
+  </macro>
+
+  <!-- Buku: Judul. Edisi. Kota: Penerbit -->
+  <macro name="body-book">
+    <group delimiter=". ">
+      <text variable="title"/>
+      <text macro="edition"/>
+      <group delimiter=": ">
+        <text variable="publisher-place"/>
+        <text variable="publisher"/>
+      </group>
+    </group>
+  </macro>
+
+  <!-- Bab buku / prosiding: 'Judul bab', in Editor, A. (ed.) Judul buku. Kota: Penerbit, pp. x-y -->
+  <macro name="body-chapter">
+    <group delimiter=" ">
+      <text variable="title" prefix="'" suffix="',"/>
+      <text term="in"/>
+      <text macro="editor"/>
+      <text variable="container-title" suffix="."/>
+      <group delimiter=", ">
+        <group delimiter=": ">
+          <text variable="publisher-place"/>
+          <text variable="publisher"/>
+        </group>
+        <text macro="pages"/>
+      </group>
+    </group>
+  </macro>
+
+  <!-- Skripsi / tesis / disertasi -->
+  <macro name="body-thesis">
+    <group delimiter=". ">
+      <text variable="title"/>
+      <text variable="genre"/>
+      <text variable="publisher"/>
+    </group>
+  </macro>
+
+  <!-- Laporan -->
+  <macro name="body-report">
+    <group delimiter=". ">
+      <text variable="title"/>
+      <group delimiter=": ">
+        <text variable="publisher-place"/>
+        <text variable="publisher"/>
+      </group>
+      <text macro="access"/>
+    </group>
+  </macro>
+
+  <!-- Laman web dan sumber lain -->
+  <macro name="body-web">
+    <group delimiter=". ">
+      <text variable="title"/>
+      <text variable="container-title"/>
+      <text macro="access"/>
+    </group>
+  </macro>
+
+  <!-- ===================== KUTIPAN DALAM TEKS ===================== -->
+  <citation et-al-min="4" et-al-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="false">
+    <sort>
+      <key macro="author-short"/>
+      <key macro="year"/>
+    </sort>
+    <layout prefix="(" suffix=")" delimiter="; ">
+      <group delimiter=", ">
+        <text macro="author-short"/>
+        <text macro="year"/>
+        <group delimiter=" ">
+          <label variable="locator" form="short"/>
+          <text variable="locator"/>
+        </group>
+      </group>
+    </layout>
+  </citation>
+
+  <!-- ===================== DAFTAR PUSTAKA ===================== -->
+  <bibliography hanging-indent="true" entry-spacing="0" subsequent-author-substitute="">
+    <sort>
+      <key macro="author"/>
+      <key variable="issued"/>
+      <key variable="title"/>
+    </sort>
+    <layout suffix=".">
+      <group delimiter=" ">
+        <text macro="author"/>
+        <text macro="year-paren"/>
+        <choose>
+          <if type="article-journal">
+            <text macro="body-journal"/>
+          </if>
+          <else-if type="article-newspaper article-magazine" match="any">
+            <text macro="body-news"/>
+          </else-if>
+          <else-if type="book" match="any">
+            <text macro="body-book"/>
+          </else-if>
+          <else-if type="chapter paper-conference" match="any">
+            <text macro="body-chapter"/>
+          </else-if>
+          <else-if type="thesis" match="any">
+            <text macro="body-thesis"/>
+          </else-if>
+          <else-if type="report" match="any">
+            <text macro="body-report"/>
+          </else-if>
+          <else>
+            <text macro="body-web"/>
+          </else>
+        </choose>
+      </group>
+    </layout>
+  </bibliography>
+</style>
